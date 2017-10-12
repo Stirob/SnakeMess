@@ -28,14 +28,19 @@ namespace SnakeMess
 	{
 		public static void Main(string[] arguments)
 		{
+            // SETTER VALUE TIL TASTETRYKK
 			bool gg = false, pause = false, inUse = false;
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
-			short last = newDir;
+			short last = newDir
+
+
 			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
 			Random rng = new Random();
 			Point app = new Point();
 			List<Point> snake = new List<Point>();
 			snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10));
+
+            // TOPPEN?
 			Console.CursorVisible = false;
 			Console.Title = "Westerdals Oslo ACT - SNAKE";
 			Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
@@ -54,6 +59,7 @@ namespace SnakeMess
 			}
 			Stopwatch t = new Stopwatch();
 			t.Start();
+            // MOVEMENT TIL SNAKE - GIR TASTETRYKK EN MENING
 			while (!gg) {
 				if (Console.KeyAvailable) {
 					ConsoleKeyInfo cki = Console.ReadKey(true);
@@ -70,6 +76,8 @@ namespace SnakeMess
 					else if (cki.Key == ConsoleKey.LeftArrow && last != 1)
 						newDir = 3;
 				}
+
+
 				if (!pause) {
 					if (t.ElapsedMilliseconds < 100)
 						continue;
@@ -124,6 +132,8 @@ namespace SnakeMess
 								break;
 							}
 					}
+
+                    // WINNER WINNER CHICKEN DINNER
 					if (!gg) {
 						Console.ForegroundColor = ConsoleColor.Yellow;
 						Console.SetCursorPosition(head.X, head.Y); Console.Write("0");
