@@ -31,7 +31,7 @@ namespace SnakeMess
             // SETTER VALUE TIL TASTETRYKK
 			bool gg = false, pause = false, inUse = false;
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
-			short last = newDir
+			short last = newDir;
 
 
 			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
@@ -57,7 +57,7 @@ namespace SnakeMess
 					break;
 				}
 			}
-			Stopwatch t = new Stopwatch();
+			Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
 			t.Start();
             // MOVEMENT TIL SNAKE - GIR TASTETRYKK EN MENING
 			while (!gg) {
