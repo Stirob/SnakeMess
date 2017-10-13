@@ -88,40 +88,32 @@ namespace SnakeMess
 							newH.X -= 1;
 							break;
 					}
+                    
+                    gg = check.gg(newH.X, newH.Y, snake.Count, boardW, boardH);
 
-					if (newH.X < 0 || newH.X >= boardW)
-						gg = true;
-					else if (newH.Y < 0 || newH.Y >= boardH)
-						gg = true;
-					if (newH.X == app.X && newH.Y == app.Y) {
-						if (snake.Count + 1 >= boardW * boardH)
-							// No more room to place apples - game over.
-							gg = true;
-						else {
-							while (true) {
-								app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
-								bool found = true;
-								foreach (Point i in snake)
-									if (i.X == app.X && i.Y == app.Y) {
-										found = false;
-										break;
-									}
-								if (found) {
-									inUse = true;
+					if (newH.X == app.X && newH.Y == app.Y)
+                    {
+						
+						while (true) {
+							app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+							bool found = true;
+							foreach (Point i in snake)
+								if (i.X == app.X && i.Y == app.Y) {
+									found = false;
 									break;
 								}
+							if (found) {
+								inUse = true;
+								break;
 							}
 						}
+					
 					}
 
 					if (!inUse) {
 						snake.RemoveAt(0);
-						foreach (Point x in snake)
-							if (x.X == newH.X && x.Y == newH.Y) {
-								// Death by accidental self-cannibalism.
-								gg = true;
-								break;
-							}
+                        gg = check.canibal(snake, newH.X, newH.Y);
+						
 					}
 
                     // WINNER WINNER CHICKEN DINNER
