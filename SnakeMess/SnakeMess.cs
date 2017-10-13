@@ -3,16 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 
-// WARNING: DO NOT code like this. Please. EVER! 
-//          "Aaaargh!" 
-//          "My eyes bleed!" 
-//          "I facepalmed my facepalm." 
-//          Etc.
-//          I had a lot of fun obfuscating this code! And I can now (proudly?) say that this is the uggliest short piece of code I've ever written!
-//          (And yes, it could have been ugglier. But the idea wasn't to make it fuggly-uggly, just funny-uggly or sweet-uggly.)
-//
-//          -Tomas
-//
 namespace SnakeMess
 {
 
@@ -25,8 +15,6 @@ namespace SnakeMess
 			bool gg = false, pause = false, inUse = false;
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
 			short last = newDir;
-
-
 			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
 			var rng = new Random();
 			var app = new Point();
@@ -36,15 +24,15 @@ namespace SnakeMess
 			snake.Add(new Point(10, 10));
 			snake.Add(new Point(10, 10));
 
-            // TOPPEN?
-			Console.CursorVisible = false;
-			Console.Title = "Westerdals Oslo ACT - SNAKE";
-			app.setFood();
+			// Board + tittel
+			Board gameBoard = new Board(Console.WindowWidth, Console.WindowHeight, "Westerdals Oslo ACT - SNAKE");
+			app.setHead();
 
 			//Set board metode
 			while (true) {
 				app.X = rng.Next(0, boardW);
 				app.Y = rng.Next(0, boardH);
+
 				bool spot = true;
 
 				foreach (Point i in snake)
@@ -53,7 +41,7 @@ namespace SnakeMess
 						break;
 					}
 					if (spot) {
-					app.setColor();
+					Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
 					break;
 				}
 			}
@@ -138,6 +126,7 @@ namespace SnakeMess
 
                     // WINNER WINNER CHICKEN DINNER
 					if (!gg) {
+						//Kan lage en snake klasse med snake metoder...
 						Console.ForegroundColor = ConsoleColor.Yellow;
 						Console.SetCursorPosition(head.X, head.Y);
 						Console.Write("0");
@@ -145,7 +134,9 @@ namespace SnakeMess
 							Console.SetCursorPosition(tail.X, tail.Y);
 							Console.Write(" ");
 						} else {
-							app.setColor();
+							Console.ForegroundColor = ConsoleColor.Green;
+							Console.SetCursorPosition(app.X, app.Y);
+							Console.Write("$");
 							inUse = false;
 						}
 						snake.Add(newH);
