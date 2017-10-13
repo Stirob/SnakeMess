@@ -47,7 +47,9 @@ namespace SnakeMess
             // TOPPEN?
 			Console.CursorVisible = false;
 			Console.Title = "Westerdals Oslo ACT - SNAKE";
-			Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.SetCursorPosition(10, 10);
+			Console.Write("@");
 
 			//Set board metode
 			while (true) {
@@ -61,7 +63,9 @@ namespace SnakeMess
 						break;
 					}
 					if (spot) {
-						Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.SetCursorPosition(app.X, app.Y);
+					Console.Write("$");
 						break;
 				}
 			}
