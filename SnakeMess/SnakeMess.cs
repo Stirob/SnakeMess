@@ -15,14 +15,6 @@ using System.Diagnostics;
 //
 namespace SnakeMess
 {
-	class Point
-	{
-		public const string Ok = "Ok";
-
-		public int X; public int Y;
-		public Point(int x = 0, int y = 0) { X = x; Y = y; }
-		public Point(Point input) { X = input.X; Y = input.Y; }
-	}
 
 	class SnakeMess
 	{
@@ -47,9 +39,7 @@ namespace SnakeMess
             // TOPPEN?
 			Console.CursorVisible = false;
 			Console.Title = "Westerdals Oslo ACT - SNAKE";
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.SetCursorPosition(10, 10);
-			Console.Write("@");
+			app.setFood();
 
 			//Set board metode
 			while (true) {
@@ -63,10 +53,8 @@ namespace SnakeMess
 						break;
 					}
 					if (spot) {
-					Console.ForegroundColor = ConsoleColor.Green;
-					Console.SetCursorPosition(app.X, app.Y);
-					Console.Write("$");
-						break;
+					app.setColor();
+					break;
 				}
 			}
 
@@ -157,9 +145,7 @@ namespace SnakeMess
 							Console.SetCursorPosition(tail.X, tail.Y);
 							Console.Write(" ");
 						} else {
-							Console.ForegroundColor = ConsoleColor.Green;
-							Console.SetCursorPosition(app.X, app.Y);
-							Console.Write("$");
+							app.setColor();
 							inUse = false;
 						}
 						snake.Add(newH);
