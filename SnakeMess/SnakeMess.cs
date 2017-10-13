@@ -26,6 +26,7 @@ namespace SnakeMess
 
 	class SnakeMess
 	{
+
 		public static void Main(string[] arguments)
 		{
             // SETTER VALUE TIL TASTETRYKK
@@ -35,28 +36,36 @@ namespace SnakeMess
 
 
 			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
-			Random rng = new Random();
-			Point app = new Point();
+			var rng = new Random();
+			var app = new Point();
 			List<Point> snake = new List<Point>();
-			snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10));
+			snake.Add(new Point(10, 10));
+			snake.Add(new Point(10, 10));
+			snake.Add(new Point(10, 10));
+			snake.Add(new Point(10, 10));
 
             // TOPPEN?
 			Console.CursorVisible = false;
 			Console.Title = "Westerdals Oslo ACT - SNAKE";
 			Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
+
+			//Set board metode
 			while (true) {
-				app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+				app.X = rng.Next(0, boardW);
+				app.Y = rng.Next(0, boardH);
 				bool spot = true;
+
 				foreach (Point i in snake)
 					if (i.X == app.X && i.Y == app.Y) {
 						spot = false;
 						break;
 					}
-				if (spot) {
-					Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
-					break;
+					if (spot) {
+						Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
+						break;
 				}
 			}
+
 			Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
 			t.Start();
             // MOVEMENT TIL SNAKE - GIR TASTETRYKK EN MENING
@@ -99,6 +108,7 @@ namespace SnakeMess
 							newH.X -= 1;
 							break;
 					}
+
 					if (newH.X < 0 || newH.X >= boardW)
 						gg = true;
 					else if (newH.Y < 0 || newH.Y >= boardH)
@@ -123,6 +133,7 @@ namespace SnakeMess
 							}
 						}
 					}
+
 					if (!inUse) {
 						snake.RemoveAt(0);
 						foreach (Point x in snake)
@@ -136,15 +147,21 @@ namespace SnakeMess
                     // WINNER WINNER CHICKEN DINNER
 					if (!gg) {
 						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(head.X, head.Y); Console.Write("0");
+						Console.SetCursorPosition(head.X, head.Y);
+						Console.Write("0");
 						if (!inUse) {
-							Console.SetCursorPosition(tail.X, tail.Y); Console.Write(" ");
+							Console.SetCursorPosition(tail.X, tail.Y);
+							Console.Write(" ");
 						} else {
-							Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
+							Console.ForegroundColor = ConsoleColor.Green;
+							Console.SetCursorPosition(app.X, app.Y);
+							Console.Write("$");
 							inUse = false;
 						}
 						snake.Add(newH);
-						Console.ForegroundColor = ConsoleColor.Yellow; Console.SetCursorPosition(newH.X, newH.Y); Console.Write("@");
+						Console.ForegroundColor = ConsoleColor.Yellow;
+						Console.SetCursorPosition(newH.X, newH.Y);
+						Console.Write("@");
 						last = newDir;
 					}
 				}
