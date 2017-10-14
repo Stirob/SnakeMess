@@ -23,5 +23,29 @@ namespace SnakeMess
 			Console.CursorVisible = false;
 			Console.Title = windowTitle;
 		}
+		public void setFood(Point app, Random rng, List<Point> snake, int width, int height)
+		{
+			while (true)
+			{
+				app.X = rng.Next(0, width);
+				app.Y = rng.Next(0, height);
+
+				bool spot = true;
+
+				foreach (Point i in snake)
+					if (i.X == app.X && i.Y == app.Y)
+					{
+						spot = false;
+						break;
+					}
+				if (spot)
+				{
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.SetCursorPosition(app.X, app.Y);
+					Console.Write("$");
+					break;
+				}
+			}
+		}
 	}
 }
