@@ -11,7 +11,7 @@ namespace SnakeMess
 
         public static Boolean gg(int newPosX, int newPosY, int snakeLength, int boardH, int boardW)
         {
-            if (newPos < 0 || newPos >= boardW)
+            if (newPosX < 0 || newPosX >= boardW)
                 return true;
             if (newPosY < 0 || newPosY >= boardH)
                 return true;
