@@ -31,6 +31,7 @@ namespace SnakeMess
 			//Set random food metode, vet ikke om det funker ennå
 			gameBoard.setFood(app, rng, snake, Console.WindowWidth, Console.WindowHeight);
 
+
 			Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
 			t.Start();
 			// MOVEMENT TIL SNAKE - GIR TASTETRYKK EN MENING
@@ -78,7 +79,7 @@ namespace SnakeMess
 							break;
 					}
 
-					gg = check.gg(newH.X, newH.Y, snake.Count, boardW, boardH);
+					gg = check.gg(newH.X, newH.Y, snake.Count, gameBoard.BoardWidth, gameBoard.boardHeight);
 
 					if (newH.X == app.X && newH.Y == app.Y)
 					{
