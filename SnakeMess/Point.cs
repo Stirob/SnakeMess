@@ -18,7 +18,7 @@ namespace SnakeMess
 			X = input.X; Y = input.Y;
 		}
 
-		public void setHead()
+		public void setFood()
 		{
 			Console.ForegroundColor = ConsoleColor.Green;
 			Console.SetCursorPosition(10, 10);

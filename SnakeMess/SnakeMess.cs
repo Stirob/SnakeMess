@@ -27,7 +27,7 @@ namespace SnakeMess
 			// Board + tittel
 			Board gameBoard = new Board(Console.WindowWidth, Console.WindowHeight, "Westerdals Oslo ACT - SNAKE");
 			//Kan byte ut metoden fra point, setter hode til slangen NB! Lag snake klasse
-			app.setHead();
+			app.setFood();
 			//Set random food metode, vet ikke om det funker ennå
 			gameBoard.setFood(app, rng, snake, Console.WindowWidth, Console.WindowHeight);
 
@@ -125,7 +125,7 @@ namespace SnakeMess
 						else
 						{
 							//Kan fjerne denne metoden fra point og lage den på snake : )
-							app.setHead();
+							app.setFood();
 							inUse = false;
 						}
 						snake.Add(newH);
