@@ -21,3 +21,9 @@ C:\Users\admin\Dropbox\Westerdals 2016 & 2017\Alle Fag\Semester 3\Software Desig
 C:\Users\admin\Dropbox\Westerdals 2016 & 2017\Alle Fag\Semester 3\Software Design\Gruppe oppgaver\SnakeMess\SnakeMess\obj\x86\Debug\SnakeMess.pdb
 C:\Users\admin\Dropbox\Westerdals 2016 & 2017\Alle Fag\Semester 3\Software Design\Gruppe oppgaver\SnakeMess\SnakeMess\bin\Debug\SnakeMess.exe
 C:\Users\admin\Dropbox\Westerdals 2016 & 2017\Alle Fag\Semester 3\Software Design\Gruppe oppgaver\SnakeMess\SnakeMess\bin\Debug\SnakeMess.pdb
+C:\Users\robin\Documents\GitHub\SnakeMess\SnakeMess\obj\x86\Debug\SnakeMess.csprojResolveAssemblyReference.cache
+C:\Users\robin\Documents\GitHub\SnakeMess\SnakeMess\obj\x86\Debug\SnakeMess.csproj.CoreCompileInputs.cache
+C:\Users\robin\Documents\GitHub\SnakeMess\SnakeMess\obj\x86\Debug\SnakeMess.exe
+C:\Users\robin\Documents\GitHub\SnakeMess\SnakeMess\obj\x86\Debug\SnakeMess.pdb
+C:\Users\robin\Documents\GitHub\SnakeMess\SnakeMess\bin\Debug\SnakeMess.exe
+C:\Users\robin\Documents\GitHub\SnakeMess\SnakeMess\bin\Debug\SnakeMess.pdb
