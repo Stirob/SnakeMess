@@ -14,37 +14,37 @@ namespace SnakeMess
 			// SETTER VALUE TIL TASTETRYKK
 			bool gg = false, pause = false, inUse = false;
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left6
+			Board gameBoard = new Board(Console.WindowWidth, Console.WindowHeight, "Westerdals Oslo ACT - SNAKE");
 			short last = newDir;
-			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
-			Random rng = new Random();
-			Point app = new Point();
-			List<Point> snake = new List<Point>();
-			snake.Add(new Point(10, 10));
-			snake.Add(new Point(10, 10));
-			snake.Add(new Point(10, 10));
-			snake.Add(new Point(10, 10));
-            Console.CursorVisible = false;
-            Console.Title = "Westerdals Oslo ACT - SNAKE";
-            Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
-            while (true)
-            {
-                app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH); //lager point
-                bool spot = true;
-                foreach (Point i in snake)
-                    if (i.X == app.X && i.Y == app.Y)
-                    {
-                        spot = false;
-                        break;
-                    }
-                if (spot)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
-                    break;
-                }
-            }
 
+			var rng = new Random();
+			var set = new Point();
+			var app = new Point();
+			var snake = new Snake(4);
 
-            Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
+			//Kan byte ut metoden fra point, setter hode til slangen NB! Lag snake klasse
+			app.setFood();
+			//Set random food metode, vet ikke om det funker ennå
+
+			while (true)
+				{
+					bool spot = true;
+					app.X = rng.Next(0, gameBoard.BoardWidth);
+					app.Y = rng.Next(0, gameBoard.BoardHeight);
+					foreach (Point i in snake.GetSnake())
+						if (i.X == app.X && i.Y == app.Y)
+						{
+							spot = false;
+							break;
+						}
+					if (spot)
+					{
+						app.DrawFood();
+						break;
+					}
+				}
+
+			Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
 			t.Start();
 			// MOVEMENT TIL SNAKE - GIR TASTETRYKK EN MENING
 			while (!gg)
@@ -67,45 +67,46 @@ namespace SnakeMess
 				}
 
 
-                if (!pause)
-                {
-                    if (t.ElapsedMilliseconds < 100)
-                        continue;
-                    t.Restart();
-                    Point tail = new Point(snake.First());
-					Point head = new Point(snake.Last());
-					Point newH = new Point(head);
+				if (!pause)
+				{
+					if (t.ElapsedMilliseconds < 100)
+						continue;
+					t.Restart();
+					snake.Update();
+
 					switch (newDir)
 					{
 						case 0:
-							newH.Y -= 1;
+							snake.NewHead.Y -= 1;
 							break;
 						case 1:
-							newH.X += 1;
+							snake.NewHead.X += 1;
 							break;
 						case 2:
-							newH.Y += 1;
+							snake.NewHead.Y += 1;
 							break;
 						default:
-							newH.X -= 1;
+							snake.NewHead.X -= 1;
 							break;
 					}
 
-                    if (newH.X < 0 || newH.X >= boardW)
+                    if (snake.NewHead.X < 0 || snake.NewHead.X >= gameBoard.BoardWidth)
                         gg = true;
-                    else if (newH.Y < 0 || newH.Y >= boardH)
+                    else if (snake.NewHead.Y < 0 || snake.NewHead.Y >= gameBoard.BoardHeight)
                         gg = true;
+                       
 
-                    if (newH.X == app.X && newH.Y == app.Y)
-                    {
-                        if (snake.Count + 1 >= boardW * boardH)
-                            // No more room to place apples - game over.
-                            gg = true;
+					if (snake.NewHead.X == app.X && snake.NewHead.Y == app.Y)
+					{
+                            if (snake.snakeCount() + 1 >= gameBoard.BoardWidth * gameBoard.BoardHeight)
+                                // No more room to place apples - game over.
+                                gg = true;
 
-                        while (true) {
-							app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+                            while (true)
+						{
+							app.X = rng.Next(0, gameBoard.BoardWidth); app.Y = rng.Next(0, gameBoard.BoardHeight);
 							bool found = true;
-							foreach (Point i in snake)
+							foreach (Point i in snake.GetSnake())
 								if (i.X == app.X && i.Y == app.Y)
                                 {
 									found = false;
@@ -120,39 +121,33 @@ namespace SnakeMess
 
 					if (!inUse)
 					{
-						snake.RemoveAt(0);
-                        foreach (Point x in snake)
-                            if (x.X == newH.X && x.Y == newH.Y)
+                        snake.GetSnake().RemoveAt(0);
+                        foreach (Point x in snake.GetSnake())
+                            if (x.X == snake.NewHead.X && x.Y == snake.NewHead.Y)
                             {
                                 // Death by accidental self-cannibalism.
                                 gg = true;
                                 break;
                             }
+						
 
                     }
 
 					// WINNER WINNER CHICKEN DINNER
 					if (!gg)
 					{
-						//Kan lage en snake klasse med snake metoder...
-						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(head.X, head.Y);
-						Console.Write("0");
+						snake.PlaceTail();
 						if (!inUse)
 						{
-							Console.SetCursorPosition(tail.X, tail.Y);
-							Console.Write(" ");
+							snake.DrawNothing();
 						}
 						else
 						{
-							//Kan fjerne denne metoden fra point og lage den på snake : )
-							app.setFood();
+							app.DrawFood();
 							inUse = false;
 						}
-						snake.Add(newH);
-						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(newH.X, newH.Y);
-						Console.Write("@");
+						snake.GetSnake().Add(snake.NewHead);
+						snake.PlaceHead();
 						last = newDir;
 					}
 				}

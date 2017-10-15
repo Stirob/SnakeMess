@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Diagnostics;
 
 namespace SnakeMess
 {
@@ -13,7 +13,7 @@ namespace SnakeMess
 
 		//Har ingen set metode
 		public int BoardWidth { get { return boardW; } }
-		public int boardHeight { get { return boardH; } }
+		public int BoardHeight { get { return boardH; } }
 
 
 		public Board(int width, int height, string windowTitle)
@@ -22,27 +22,6 @@ namespace SnakeMess
 			this.boardH = height;
 			Console.CursorVisible = false;
 			Console.Title = windowTitle;
-		}
-
-		public void setFood(Point app, Random rng, List<Point> snake, int width, int height)
-		{
-			while (true)
-			{
-				bool spot = true;
-				app.X = rng.Next(0, width);
-				app.Y = rng.Next(0, height);
-				foreach (Point i in snake)
-					if (i.X == app.X && i.Y == app.Y)
-					{
-						spot = false;
-						break;
-					}
-				if (spot)
-				{
-					app.setFood();
-					break;
-				}
-			}
 		}
 	}
 }

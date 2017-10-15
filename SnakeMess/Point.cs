@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Diagnostics;
 
 namespace SnakeMess
 {
@@ -23,6 +23,13 @@ namespace SnakeMess
 			Console.ForegroundColor = ConsoleColor.Green;
 			Console.SetCursorPosition(10, 10);
 			Console.Write("@");
+		}
+
+		public void DrawFood()
+		{
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.SetCursorPosition(this.X, this.Y);
+			Console.Write("$");
 		}
 	}
 }
