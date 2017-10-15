@@ -14,23 +14,34 @@ namespace SnakeMess
 			// SETTER VALUE TIL TASTETRYKK
 			bool gg = false, pause = false, inUse = false;
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left6
-			short last = newDir;
-			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
-			var rng = new Random();
-			var app = new Point();
-			List<Point> snake = new List<Point>();
-			snake.Add(new Point(10, 10));
-			snake.Add(new Point(10, 10));
-			snake.Add(new Point(10, 10));
-			snake.Add(new Point(10, 10));
-
-			// Board + tittel
 			Board gameBoard = new Board(Console.WindowWidth, Console.WindowHeight, "Westerdals Oslo ACT - SNAKE");
+			short last = newDir;
+			var rng = new Random();
+			var set = new Point();
+			var app = new Point();
+			var snake = new Snake(4);
+
 			//Kan byte ut metoden fra point, setter hode til slangen NB! Lag snake klasse
 			app.setFood();
 			//Set random food metode, vet ikke om det funker ennå
-			gameBoard.setFood(app, rng, snake, Console.WindowWidth, Console.WindowHeight);
 
+			while (true)
+				{
+					bool spot = true;
+					app.X = rng.Next(0, gameBoard.BoardWidth);
+					app.Y = rng.Next(0, gameBoard.BoardHeight);
+					foreach (Point i in snake.GetSnake())
+						if (i.X == app.X && i.Y == app.Y)
+						{
+							spot = false;
+							break;
+						}
+					if (spot)
+					{
+						app.DrawFood();
+						break;
+					}
+				}
 
 			Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
 			t.Start();
@@ -54,41 +65,38 @@ namespace SnakeMess
 						newDir = 3;
 				}
 
-
 				if (!pause)
 				{
 					if (t.ElapsedMilliseconds < 100)
 						continue;
 					t.Restart();
-					Point tail = new Point(snake.First());
-					Point head = new Point(snake.Last());
-					Point newH = new Point(head);
+					snake.Update();
 					switch (newDir)
 					{
 						case 0:
-							newH.Y -= 1;
+							snake.NewHead.Y -= 1;
 							break;
 						case 1:
-							newH.X += 1;
+							snake.NewHead.X += 1;
 							break;
 						case 2:
-							newH.Y += 1;
+							snake.NewHead.Y += 1;
 							break;
 						default:
-							newH.X -= 1;
+							snake.NewHead.X -= 1;
 							break;
 					}
 
-					gg = check.gg(newH.X, newH.Y, snake.Count, gameBoard.BoardWidth, gameBoard.boardHeight);
+					gg = check.gg(snake.NewHead.X, snake.NewHead.Y, snake.GetSnake().Count, gameBoard.BoardWidth, gameBoard.BoardHeight);
 
-					if (newH.X == app.X && newH.Y == app.Y)
+					if (snake.NewHead.X == app.X && snake.NewHead.Y == app.Y)
 					{
 
 						while (true)
 						{
-							app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+							app.X = rng.Next(0, gameBoard.BoardWidth); app.Y = rng.Next(0, gameBoard.BoardHeight);
 							bool found = true;
-							foreach (Point i in snake)
+							foreach (Point i in snake.GetSnake())
 								if (i.X == app.X && i.Y == app.Y)
 								{
 									found = false;
@@ -100,38 +108,30 @@ namespace SnakeMess
 								break;
 							}
 						}
-
 					}
 
 					if (!inUse)
 					{
-						snake.RemoveAt(0);
-						gg = check.canibal(snake, newH.X, newH.Y);
+						snake.GetSnake().RemoveAt(0);
+						gg = check.canibal(snake.GetSnake(), snake.NewHead.X, snake.NewHead.Y);
 
 					}
 
 					// WINNER WINNER CHICKEN DINNER
 					if (!gg)
 					{
-						//Kan lage en snake klasse med snake metoder...
-						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(head.X, head.Y);
-						Console.Write("0");
+						snake.PlaceTail();
 						if (!inUse)
 						{
-							Console.SetCursorPosition(tail.X, tail.Y);
-							Console.Write(" ");
+							snake.DrawNothing();
 						}
 						else
 						{
-							//Kan fjerne denne metoden fra point og lage den på snake : )
-							app.setFood();
+							app.DrawFood();
 							inUse = false;
 						}
-						snake.Add(newH);
-						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(newH.X, newH.Y);
-						Console.Write("@");
+						snake.GetSnake().Add(snake.NewHead);
+						snake.PlaceHead();
 						last = newDir;
 					}
 				}
