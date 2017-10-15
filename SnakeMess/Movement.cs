@@ -8,9 +8,9 @@ namespace SnakeMess
 	enum Movement
 	{
 		//Bruk dette til å forenkle bevegelses kode
-		UP,
-		RIGHT,
-		DOWN,
-		LEFT
+		UP = 0,
+		RIGHT = 1,
+		DOWN = 2,
+		LEFT = 3
 	}
 }

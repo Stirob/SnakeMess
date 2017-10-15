@@ -16,10 +16,6 @@ namespace SnakeMess
 		public Point Tail { get { return tail; } set { this.tail = value; } }
 		public Point Head { get { return head; } set { this.head = value; } }
 		public Point NewHead { get { return newHead; } set { this.newHead = value; } }
-
-		public Snake()
-		{
-		}
         
 		public Snake(int bodyLength)
 		{
