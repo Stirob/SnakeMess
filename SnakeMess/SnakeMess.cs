@@ -16,23 +16,35 @@ namespace SnakeMess
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left6
 			short last = newDir;
 			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
-			var rng = new Random();
-			var app = new Point();
+			Random rng = new Random();
+			Point app = new Point();
 			List<Point> snake = new List<Point>();
 			snake.Add(new Point(10, 10));
 			snake.Add(new Point(10, 10));
 			snake.Add(new Point(10, 10));
 			snake.Add(new Point(10, 10));
+            Console.CursorVisible = false;
+            Console.Title = "Westerdals Oslo ACT - SNAKE";
+            Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
+            while (true)
+            {
+                app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH); //lager point
+                bool spot = true;
+                foreach (Point i in snake)
+                    if (i.X == app.X && i.Y == app.Y)
+                    {
+                        spot = false;
+                        break;
+                    }
+                if (spot)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
+                    break;
+                }
+            }
 
-			// Board + tittel
-			Board gameBoard = new Board(Console.WindowWidth, Console.WindowHeight, "Westerdals Oslo ACT - SNAKE");
-			//Kan byte ut metoden fra point, setter hode til slangen NB! Lag snake klasse
-			app.setFood();
-			//Set random food metode, vet ikke om det funker ennå
-			gameBoard.setFood(app, rng, snake, Console.WindowWidth, Console.WindowHeight);
 
-
-			Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
+            Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
 			t.Start();
 			// MOVEMENT TIL SNAKE - GIR TASTETRYKK EN MENING
 			while (!gg)
@@ -55,12 +67,12 @@ namespace SnakeMess
 				}
 
 
-				if (!pause)
-				{
-					if (t.ElapsedMilliseconds < 100)
-						continue;
-					t.Restart();
-					Point tail = new Point(snake.First());
+                if (!pause)
+                {
+                    if (t.ElapsedMilliseconds < 100)
+                        continue;
+                    t.Restart();
+                    Point tail = new Point(snake.First());
 					Point head = new Point(snake.Last());
 					Point newH = new Point(head);
 					switch (newDir)
@@ -79,36 +91,45 @@ namespace SnakeMess
 							break;
 					}
 
-					gg = check.gg(newH.X, newH.Y, snake.Count, gameBoard.BoardWidth, gameBoard.boardHeight);
+                    if (newH.X < 0 || newH.X >= boardW)
+                        gg = true;
+                    else if (newH.Y < 0 || newH.Y >= boardH)
+                        gg = true;
 
-					if (newH.X == app.X && newH.Y == app.Y)
-					{
+                    if (newH.X == app.X && newH.Y == app.Y)
+                    {
+                        if (snake.Count + 1 >= boardW * boardH)
+                            // No more room to place apples - game over.
+                            gg = true;
 
-						while (true)
-						{
+                        while (true) {
 							app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
 							bool found = true;
 							foreach (Point i in snake)
 								if (i.X == app.X && i.Y == app.Y)
-								{
+                                {
 									found = false;
 									break;
 								}
-							if (found)
-							{
+							if (found) {
 								inUse = true;
 								break;
 							}
 						}
-
 					}
 
 					if (!inUse)
 					{
 						snake.RemoveAt(0);
-						gg = check.canibal(snake, newH.X, newH.Y);
+                        foreach (Point x in snake)
+                            if (x.X == newH.X && x.Y == newH.Y)
+                            {
+                                // Death by accidental self-cannibalism.
+                                gg = true;
+                                break;
+                            }
 
-					}
+                    }
 
 					// WINNER WINNER CHICKEN DINNER
 					if (!gg)
