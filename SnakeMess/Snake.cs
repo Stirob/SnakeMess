@@ -13,9 +13,9 @@ namespace SnakeMess
 		private Point head;
 		private Point newHead;
 
-		public Point Tail { get { return tail; } set { this.tail = value; } }
-		public Point Head { get { return head; } set { this.head = value; } }
-		public Point NewHead { get { return newHead; } set { this.newHead = value; } }
+		public Point Tail { get { return tail; } set { tail = value; } }
+		public Point Head { get { return head; } set { head = value; } }
+		public Point NewHead { get { return newHead; } set { newHead = value; } }
         
 		public Snake(int bodyLength)
 		{
@@ -24,39 +24,39 @@ namespace SnakeMess
 			{
 				TheSnake.Add(new Point(10, 10));
 			}
-			Update();
+			update();
 		}
 
         public int snakeCount()
         {
             return TheSnake.Count;
         }
-		public void Update()
+		public void update()
 		{
 			tail = new Point(TheSnake.First());
 			head = new Point(TheSnake.Last());
 			newHead = new Point(head);
 		}
 
-		public void PlaceTail()
+		public void placeTail()
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.SetCursorPosition(this.head.X, this.head.Y);
+			Console.SetCursorPosition(head.X, head.Y);
 			Console.Write("0");
 		}
-		public void PlaceHead()
+		public void placeHead()
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.SetCursorPosition(this.newHead.X, this.newHead.Y);
+			Console.SetCursorPosition(newHead.X, newHead.Y);
 			Console.Write("@");
 		}
-		public void DrawNothing()
+		public void drawNothing()
 		{
-			Console.SetCursorPosition(this.Tail.X, this.Tail.Y);
+			Console.SetCursorPosition(Tail.X, Tail.Y);
 			Console.Write(" ");
 		}
 
-		public List<Point> GetSnake()
+		public List<Point> getSnake()
 		{
 			return TheSnake;
 		}

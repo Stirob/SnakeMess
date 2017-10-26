@@ -12,34 +12,33 @@ namespace SnakeMess
 		public static void Main(string[] arguments)
 		{
 			// SETTER VALUE TIL TASTETRYKK
-			bool gg = false, pause = false, inUse = false;
+			bool gameOver = false, pause = false, occupied = false;
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left6
 			Board gameBoard = new Board(Console.WindowWidth, Console.WindowHeight, "Westerdals Oslo ACT - SNAKE");
-			short last = newDir;
+			short lastDir = newDir;
 
-			var rng = new Random();
-			var set = new Point();
-			var app = new Point();
+			var randomApplePos = new Random();
+			var apple = new Point();
 			var snake = new Snake(4);
 
 			//Kan byte ut metoden fra point, setter hode til slangen NB! Lag snake klasse
-			app.setFood();
+			apple.setFood();
 			//Set random food metode, vet ikke om det funker ennå
 
 			while (true)
 				{
 					bool spot = true;
-					app.X = rng.Next(0, gameBoard.BoardWidth);
-					app.Y = rng.Next(0, gameBoard.BoardHeight);
-					foreach (Point i in snake.GetSnake())
-						if (i.X == app.X && i.Y == app.Y)
+					apple.X = randomApplePos.Next(0, gameBoard.boardWidth);
+					apple.Y = randomApplePos.Next(0, gameBoard.boardHeight);
+					foreach (Point i in snake.getSnake())
+						if (i.X == apple.X && i.Y == apple.Y)
 						{
 							spot = false;
 							break;
 						}
 					if (spot)
 					{
-						app.DrawFood();
+						apple.drawFood();
 						break;
 					}
 				}
@@ -47,22 +46,22 @@ namespace SnakeMess
 			Stopwatch t = new Stopwatch(); //kontrolerer hvor lang tid hver tick i spillet tar
 			t.Start();
 			// MOVEMENT TIL SNAKE - GIR TASTETRYKK EN MENING
-			while (!gg)
+			while (!gameOver)
 			{
 				if (Console.KeyAvailable)
 				{
 					ConsoleKeyInfo cki = Console.ReadKey(true);
 					if (cki.Key == ConsoleKey.Escape)
-						gg = true;
+						gameOver = true;
 					else if (cki.Key == ConsoleKey.Spacebar)
 						pause = !pause;
-					else if (cki.Key == ConsoleKey.UpArrow && last != 2)
+					else if (cki.Key == ConsoleKey.UpArrow && lastDir != 2)
 						newDir = 0;
-					else if (cki.Key == ConsoleKey.RightArrow && last != 3)
+					else if (cki.Key == ConsoleKey.RightArrow && lastDir != 3)
 						newDir = 1;
-					else if (cki.Key == ConsoleKey.DownArrow && last != 0)
+					else if (cki.Key == ConsoleKey.DownArrow && lastDir != 0)
 						newDir = 2;
-					else if (cki.Key == ConsoleKey.LeftArrow && last != 1)
+					else if (cki.Key == ConsoleKey.LeftArrow && lastDir != 1)
 						newDir = 3;
 				}
 
@@ -72,7 +71,7 @@ namespace SnakeMess
 					if (t.ElapsedMilliseconds < 100)
 						continue;
 					t.Restart();
-					snake.Update();
+					snake.update();
 
 					switch (newDir)
 					{
@@ -90,43 +89,44 @@ namespace SnakeMess
 							break;
 					}
 
-                    if (snake.NewHead.X < 0 || snake.NewHead.X >= gameBoard.BoardWidth)
-                        gg = true;
-                    else if (snake.NewHead.Y < 0 || snake.NewHead.Y >= gameBoard.BoardHeight)
-                        gg = true;
+                    if (snake.NewHead.X < 0 || snake.NewHead.X >= gameBoard.boardWidth)
+                        gameOver = true;
+                    else if (snake.NewHead.Y < 0 || snake.NewHead.Y >= gameBoard.boardHeight)
+                        gameOver = true;
                        
 
-					if (snake.NewHead.X == app.X && snake.NewHead.Y == app.Y)
+					if (snake.NewHead.X == apple.X && snake.NewHead.Y == apple.Y)
 					{
-                            if (snake.snakeCount() + 1 >= gameBoard.BoardWidth * gameBoard.BoardHeight)
-                                // No more room to place apples - game over.
-                                gg = true;
+                            if (snake.snakeCount() + 1 >= gameBoard.boardWidth * gameBoard.boardHeight)
+                                // No more room to place appleles - game over.
+                                gameOver = true;
 
                             while (true)
-						{
-							app.X = rng.Next(0, gameBoard.BoardWidth); app.Y = rng.Next(0, gameBoard.BoardHeight);
-							bool found = true;
-							foreach (Point i in snake.GetSnake())
-								if (i.X == app.X && i.Y == app.Y)
+						    {
+							    apple.X = randomApplePos.Next(0, gameBoard.boardWidth); apple.Y = randomApplePos.Next(0, gameBoard.boardHeight);
+							    bool found = true;
+							    foreach (Point i in snake.getSnake())
+								if (i.X == apple.X && i.Y == apple.Y)
                                 {
 									found = false;
 									break;
 								}
-							if (found) {
-								inUse = true;
+							    if (found)
+                                {
+								occupied = true;
 								break;
-							}
-						}
+							    }
+						    }
 					}
 
-					if (!inUse)
+					if (!occupied)
 					{
-                        snake.GetSnake().RemoveAt(0);
-                        foreach (Point x in snake.GetSnake())
+                        snake.getSnake().RemoveAt(0);
+                        foreach (Point x in snake.getSnake())
                             if (x.X == snake.NewHead.X && x.Y == snake.NewHead.Y)
                             {
                                 // Death by accidental self-cannibalism.
-                                gg = true;
+                                gameOver = true;
                                 break;
                             }
 						
@@ -134,21 +134,21 @@ namespace SnakeMess
                     }
 
 					// WINNER WINNER CHICKEN DINNER
-					if (!gg)
+					if (!gameOver)
 					{
-						snake.PlaceTail();
-						if (!inUse)
+						snake.placeTail();
+						if (!occupied)
 						{
-							snake.DrawNothing();
+							snake.drawNothing();
 						}
 						else
 						{
-							app.DrawFood();
-							inUse = false;
+							apple.drawFood();
+							occupied = false;
 						}
-						snake.GetSnake().Add(snake.NewHead);
-						snake.PlaceHead();
-						last = newDir;
+						snake.getSnake().Add(snake.NewHead);
+						snake.placeHead();
+						lastDir = newDir;
 					}
 				}
 			}

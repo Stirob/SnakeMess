@@ -25,10 +25,10 @@ namespace SnakeMess
 			Console.Write("@");
 		}
 
-		public void DrawFood()
+		public void drawFood()
 		{
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.SetCursorPosition(this.X, this.Y);
+			Console.SetCursorPosition(X, Y);
 			Console.Write("$");
 		}
 	}
